@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="base::layout(~{::section})" xmlns="http://www.w3.org/1999/html">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    
+    <title>Sign Up Page</title>
+</head>
+<body>
+     
+     <section>
+        
+         <div class="container">
+             <div class="row">
+                 
+                 <!-- We used "6" grids for columns and "offset" is used to shift. Here, "offset-md-3" is used so "3" grids from left
+                      & "3" grids from right will be shifted. -->
+                 <div class="col-md-6 offset-md-3">
+                     
+                     <div class="my-card mt-2">
+    
+                         <!-- "th:if" is used so that if session has any message then only this alert shown to user, otherwise not. -->
+                         <!-- "th:classappend (="${session.message.type}")" is used, so that if there is no error then "alert-success" class will
+                              be added to "class (="alert")" otherwise "alert-danger" will be added and same color & message will shown to user. -->
+                         <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert" role="alert">
+                             
+                             <p class="text-center" th:text="${session.message.content}"></p> <!-- It is way to get the content of "message" attribute from "session" and print to user. -->
+                            
+                             <!-- "th:block" is used so that after show the message to user message will removed. -->
+                             <th:block th:text="${#session.removeAttribute('message')}"></th:block>
+                         </div>
+                         
+                         <div class="container text-center mt-1">
+                             <img class="" style="width: 80px;" src="" th:src="@{/img/membership.png}" alt="" />
+                         </div>
+                         
+                         <h1 class="text-center">Register Here</h1>
+                         
+                         <!-- "th:object" is used so that user data can be shown in the fields . -->
+                         <!-- "novalidate" is used to remove "HTMl" validation like "required". -->
+                         <form novalidate action="" th:action="@{/do_register}" method="post" th:object="${user}">
+                             <div class="form-group mb-3">
+                                 <label for="name_field" class="form-label">Your Name</label>
+                                 <input type="text" name="name" th:value="${user.name}" class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
+                                        id="name_field" aria-describedby="nameHelp" placeholder="Enter name here" required>
+    
+                                 <!-- This will be valid when "is-invalid" class will be appended to "class" in upper "input" field. -->
+                                 <div th:each="e : ${#fields.errors('name')}" th:text="${e}" class="invalid-feedback">
+                                 </div>
+                             </div>
+                             
+                             <div class="form-group mb-3">
+                                 <label for="email_field" class="form-label">Your Email</label>
+                                 <input type="email" name="email" th:value="${user.email}" class="form-control" id="email_field" aria-describedby="emailHelp"
+                                        placeholder="Enter email here" required>
+                             </div>
+                             
+                             <div class="form-group mb-3">
+                                 <label for="password_field" class="form-label">Your Password</label>
+                                 
+                                  <!-- Password will not be shown, he must enter his password again. -->
+                                 <input type="password" name="password"  th:classappend="${#fields.hasErrors('password') ? 'is-invalid' : ''}" class="form-control"
+                                        id="password_field" aria-describedby="passwordHelp" placeholder="Enter password here" required>
+    
+                                 <!-- This will be valid when "is-invalid" class will be appended to "class" in upper "input" field. -->
+                                 <div th:each="e : ${#fields.errors('password')}" th:text="${e}" class="invalid-feedback">
+                                 </div>
+                             </div>
+                             
+                             <div class="form-group mb-3">
+                                 <textarea name="about" th:text="${user.about}" placeholder="Enter something yourself" rows="6"
+                                           class="form-control"></textarea>
+                             </div>
+                             
+                             <div class="form-group form-check mb-3">
+                                 
+                                 <!-- "Agreement" field is not in "User" class. -->
+                                 <input type="checkbox" name="agreement" class="form-check-input" id="agreement"/>
+                                 <label for="agreement" class="form-label">Accept terms and conditions</label>
+                             </div>
+                             
+                             <div class="container text-center">
+                                 <button type="submit" class="btn bg-primary text-white">Submit</button>
+                                 <button type="reset" class="btn btn-warning text-white">Reset</button>
+                             </div>
+                         </form>
+                     </div>
+                     
+                 </div>
+             </div>
+         </div>
+         
+     </section>
+
+</body>
+</html>
